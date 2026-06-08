@@ -1,15 +1,21 @@
 package datareader;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.path.json.JsonPath;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
+import java.io.File;
 import java.io.FileReader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+import static com.jayway.jsonpath.internal.function.ParamType.PATH;
 
 public class JsonReader
 {
 
-    private final String TEST_DATA_PATH = "src/test/resources/test-data/";
+    private static final String TEST_DATA_PATH = "src/test/resources/test-data/";
     String jsonReader;
     String jsonFileName;
 
@@ -33,4 +39,20 @@ public class JsonReader
             return "";
         }
     }
+
+    public static <T> T getJson(String fileName, Class<T> clazz) {
+
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+
+            return mapper.readValue(
+                    new File(TEST_DATA_PATH + fileName + ".json"),
+                    clazz
+            );
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

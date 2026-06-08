@@ -1,0 +1,6 @@
+{
+  "title": "Feature: Add test file",
+  "body": "This PR adds a test markdown file",
+  "head": "feature-branch",
+  "base": "master"
+}
