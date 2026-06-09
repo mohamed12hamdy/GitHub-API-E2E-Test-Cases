@@ -56,6 +56,14 @@
         </dependency>
 
 
+        <!-- OR if using Logback (simpler) -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.4.11</version>
+        </dependency>
+
+
     </dependencies>
 
 </project>

@@ -7,13 +7,15 @@ import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import models.Repository;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static io.restassured.RestAssured.given;
 
 public class RepositoryService {
 
     public Response createRepo(Repository repo) {
        return given()
-                .baseUri(ConfigReader.get("base.url"))
                 .header("Authorization", "Bearer " + EnvironmentVariables.GITHUB_TOKEN)
                 .contentType(ContentType.JSON)
                 .body(repo)
@@ -23,7 +25,6 @@ public class RepositoryService {
 
     public Response getRepo(String username,String repo) {
         return given()
-                .baseUri(ConfigReader.get("base.url"))
                 .header("Authorization", "Bearer " + EnvironmentVariables.GITHUB_TOKEN)
                 .pathParam("username", username)
                 .pathParam("repo", repo)
@@ -31,4 +32,27 @@ public class RepositoryService {
                 .get(RepoEndpoints.GET_REPO);
 
     }
+
+    public Response updateRepoDescription(String username, String repo, String newDescription) {
+        Map<String, String> body = new HashMap<>();
+        body.put("description", newDescription);
+        return given()
+                .header("Authorization", "Bearer " + EnvironmentVariables.GITHUB_TOKEN)
+                .contentType(ContentType.JSON)
+                .pathParam("username", username)
+                .pathParam("repo", repo)
+                .body(body)
+                .when()
+                .patch(RepoEndpoints.UPDATE_REPO);
+    }
+
+    public Response deleteRepo(String username, String repo) {
+        return given()
+                .header("Authorization", "Bearer " + EnvironmentVariables.GITHUB_TOKEN)
+                .pathParam("username", username)
+                .pathParam("repo", repo)
+                .when()
+                .delete(RepoEndpoints.DELETE_REPO);
+    }
+
 }

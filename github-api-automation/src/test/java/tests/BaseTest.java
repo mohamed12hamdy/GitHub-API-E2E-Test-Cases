@@ -9,7 +9,7 @@ import org.testng.annotations.BeforeClass;
 public class BaseTest {
 
     @BeforeClass
-    public void setUp() {
+    public void baseSetUp() {
         RestAssured.requestSpecification =
                 new RequestSpecBuilder()
                         .setBaseUri(ConfigReader.get("base.url"))
