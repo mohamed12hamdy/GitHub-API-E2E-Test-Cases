@@ -28,8 +28,6 @@ public class RepositoryApiE2ETests extends BaseTest{
                 Boolean.parseBoolean(repoData.getJsonData("auto_init")));
 
          username = ConfigReader.get("username");
-
-
     }
 
     @Test
