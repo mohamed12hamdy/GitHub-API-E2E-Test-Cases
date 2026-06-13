@@ -33,19 +33,36 @@ public class BranchesAndPullRequestE2ETests extends RepositoryApiBase {
     @Test
     public void testBranchesAndPullRequestE2ETests() {
 
-     branchesAndPullRequestService
+        createNewBranch();
+
+        createFileOnNewBranch();
+
+        int pullNumber = createPullRequest();
+
+       getPullRequest(pullNumber);
+
+       mergePullRequest(pullNumber);
+
+    }
+
+    private void createNewBranch() {
+        branchesAndPullRequestService
                 .createNewBranch(username, repository.getName(), ref, sha)
                 .then()
                 .statusCode(201)
                 .body("ref", equalTo("refs/heads/feature-branch"))
                 .body("object.sha", equalTo(sha));
+    }
 
+    private void createFileOnNewBranch() {
         branchesAndPullRequestService.createFileOnNewBranch(username, repository.getName(), filepath,
                         JsonReader.getJson("File", File.class))
                 .then()
                 .statusCode(201);
+    }
 
-        Integer pullNumber = branchesAndPullRequestService.createPullRequest(
+    private Integer createPullRequest() {
+       return  branchesAndPullRequestService.createPullRequest(
                         username,
                         repository.getName(),
                         JsonReader.getJson("PullRequest", PullRequest.class))
@@ -53,26 +70,29 @@ public class BranchesAndPullRequestE2ETests extends RepositoryApiBase {
                 .statusCode(201)
                 .extract()
                 .path("number");
+    }
 
-
-
+    private void getPullRequest(Integer pullNumber) {
         branchesAndPullRequestService.getPullRequest(username, repository.getName(), pullNumber)
                 .then()
                 .statusCode(200)
                 .body("state", equalTo("open"));
+    }
 
+    private void mergePullRequest(Integer pullNumber) {
         branchesAndPullRequestService.mergePullRequest(username, repository.getName(), pullNumber,
                         JsonReader.getJson("MergePullRequest", MergePullRequest.class))
                 .then()
                 .statusCode(200)
                 .body("merged", equalTo(true));
-
     }
+
 
     @AfterClass
     public void teardown() {
         repositoryService.deleteRepo(username, repository.getName());
     }
+
 
 }
 

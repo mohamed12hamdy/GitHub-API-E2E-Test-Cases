@@ -69,7 +69,10 @@ public class BranchesAndPullRequestService {
                 .get(BranchesEndpoints.GET_PULL_REQUEST);
     }
 
-    public Response mergePullRequest(String username , String repo , Integer pullNumber, MergePullRequest mergePullRequest) {
+
+    public Response mergePullRequest(String username , String repo , Integer pullNumber,
+                                     MergePullRequest mergePullRequest) {
+
         return given()
                 .header("Authorization", "Bearer " + EnvironmentVariables.GITHUB_TOKEN)
                 .pathParam("username", username)

@@ -10,11 +10,13 @@ public class IssueApiBase extends RepositoryApiBase {
     protected issuesService IssuesService;
     protected int issueNumber;
 
+    protected Issue issue;
     @BeforeClass(dependsOnMethods = "setUp")
     public void setUpIssue() {
         IssuesService = new issuesService();
         JsonReader issueData = new JsonReader("Issue");
-        Issue issue = new Issue(
+
+        issue = new Issue(
                 issueData.getJsonData("title"),
                 issueData.getJsonData("body"),
                 issueData.getJsonList("labels")
